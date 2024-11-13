@@ -118,9 +118,6 @@ class TradeController extends Controller
             $data["l"][] = $kline->low;
             $data["c"][] = $kline->close;
             $data["v"][] = $kline->volume;
-            $data["force_close"][] = $kline->force_close;
-            $data["nextTime"] = $nextKline ? $nextKline->open_time : null;
-            $data['timezone'] = 'Asia/Ho_Chi_Minh';
             $data['from'] = Carbon::createFromTimestamp($from)->format('Y-m-d H:i:s');
             $data['to'] = Carbon::createFromTimestamp($to)->format('Y-m-d H:i:s');
         }

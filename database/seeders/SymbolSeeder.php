@@ -45,7 +45,7 @@ class SymbolSeeder extends Seeder
                 'min_price' => 60000,
                 'max_price' => 100000,
                 'min_change' => 1,
-                'max_change' => 10,
+                'max_change' => 7,
             ]);
         }
     }
