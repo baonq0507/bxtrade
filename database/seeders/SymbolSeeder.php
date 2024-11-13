@@ -43,7 +43,7 @@ class SymbolSeeder extends Seeder
                 'timezone' => 'Asia/Ho_Chi_Minh',
                 'session' => '24x7',
                 'min_price' => 60000,
-                'max_price' => 100000,
+                'max_price' => 200000,
                 'min_change' => 1,
                 'max_change' => 7,
             ]);
