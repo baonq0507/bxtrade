@@ -26,7 +26,7 @@
                 symbol: "BTCUSDT",
                 interval: '1',
                 container_id: "tv_chart_container",
-                datafeed: new Datafeeds.UDFCompatibleDatafeed("http://bxtrade.test"),
+                datafeed: new Datafeeds.UDFCompatibleDatafeed("{{ env('APP_URL') }}"),
                 library_path: "/charting_library/",
                 locale: "vi",
                 colorTheme: 'dark',
