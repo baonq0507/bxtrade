@@ -125,6 +125,9 @@ class TradeController extends Controller
             $data['to'] = Carbon::createFromTimestamp($to)->format('Y-m-d H:i:s');
         }
 
-        return response()->json($data);
+        return response()->json($data)
+        ->header('Access-Control-Allow-Origin', '*')
+        ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+        ->header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, X-Token-Auth, Authorization');
     }
 }

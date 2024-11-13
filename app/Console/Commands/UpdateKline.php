@@ -59,13 +59,13 @@ class UpdateKline extends Command
             'close' => $closePrice,
             'high' => max($kline->open, $closePrice),
             'low' => min($kline->open, $closePrice),
-            'volume' => $kline->volume + rand(1, 100),
+            'volume' => $kline->volume + rand(0, 10),
         ]);
         $nextKline->update([
             'open' => $closePrice,
             'high' => max($nextKline->open, $closePrice),
             'low' => min($nextKline->open, $closePrice),
-            'volume' => $nextKline->volume + rand(1, 100),
+            'volume' => $nextKline->volume + rand(0,10)
         ]);
     }
 }

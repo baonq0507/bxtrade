@@ -35,9 +35,25 @@ class KlineSeeder extends Seeder
         $openTime = Carbon::now()->subDays(1)->startOfDay()->timestamp;
         $closeTime = Carbon::now()->endOfDay()->timestamp;
         $openPrice = $symbol->min_price;
-        $closePrice = rand(0, 1) ? $openPrice * (1 + rand($symbol->min_change, $symbol->max_change) / 100) : $openPrice * (1 - rand($symbol->min_change, $symbol->max_change) / 100);
-        $highPrice = max($openPrice, $closePrice) + rand(1, 4);
-        $lowPrice = min($openPrice, $closePrice) - rand(1, 4);
+        $maxChange = min($symbol->max_change, 2); // Giới hạn biến động tối đa 2%
+        $minChange = max($symbol->min_change, 0.1); // Đảm bảo có ít nhất 0.1% biến động
+        $changePercent = rand(0, 1) ? rand($minChange * 10, $maxChange * 10) / 1000 : -rand($minChange * 10, $maxChange * 10) / 1000;
+        $closePrice = $openPrice * (1 + $changePercent);
+        if($closePrice < $symbol->min_price){
+            $closePrice = $symbol->min_price;
+        }
+        if($closePrice > $symbol->max_price){
+            $closePrice = $symbol->max_price;
+        }
+        if($openPrice > $closePrice){
+            // Khi giá giảm, high sẽ gần với open và low sẽ gần với close
+            $highPrice = $openPrice + ($openPrice * rand(5, 20) / 1000); // Thêm 0.1-0.5%
+            $lowPrice = $closePrice - ($closePrice * rand(5, 20) / 1000); // Giảm 0.1-0.5%
+        }else{
+            // Khi giá tăng, high sẽ gần với close và low sẽ gần với open
+            $highPrice = $closePrice + ($closePrice * rand(5, 20) / 1000); // Thêm 0.1-0.5%
+            $lowPrice = $openPrice - ($openPrice * rand(5, 20) / 1000); // Giảm 0.1-0.5%
+        }
         $time = 60;
         // switch ($interval->interval) {
         //     case '5':
@@ -106,21 +122,31 @@ class KlineSeeder extends Seeder
                 'close' => $closePrice,
                 'high' => $highPrice,
                 'low' => $lowPrice,
-                'volume' => rand(1000, 100000),
+                'volume' => rand(10, 100),
                 'symbol_id' => $symbol->id,
                 'interval_id' => $interval->id,
             ];
             $openPrice = $closePrice;
             $closePrice = rand(0, 1) ? $openPrice * (1 + rand($symbol->min_change, $symbol->max_change) / 100) : $openPrice * (1 - rand($symbol->min_change, $symbol->max_change) / 100);
-            $highPrice = max($openPrice, $closePrice) + rand(1, 4);
-            $lowPrice = min($openPrice, $closePrice) - rand(1, 4);
+            // $highPrice = max($openPrice, $closePrice) + rand(1, 4);
+            // $lowPrice = min($openPrice, $closePrice) - rand(1, 4);
+            if($openPrice > $closePrice){
+                $highPrice = $openPrice + ($openPrice * rand(5, 20) / 1000); // Thêm 0.1-0.5%
+                $lowPrice = $closePrice - ($closePrice * rand(5, 20) / 1000); // Giảm 0.1-0.5%
+            }else{
+                $highPrice = $closePrice + ($closePrice * rand(5, 20) / 1000); // Thêm 0.1-0.5%
+                $lowPrice = $openPrice - ($openPrice * rand(5, 20) / 1000); // Giảm 0.1-0.5%
+            }
         }
         return $data;
     }
 
     public function generateKlines($symbol, $interval)
     {
-        $data = $this->generateKlines1m($symbol, $interval);
+        $data = [];
+        if($interval->interval == '1'){
+            $data = $this->generateKlines1m($symbol, $interval);
+        }
         return $data;
     }
 }
