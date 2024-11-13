@@ -38,15 +38,6 @@
                     "scalesProperties.textColor": "#AAA",
                     "paneProperties.left.background": "#131722",
                 },
-                drawings_access: {
-                    type: 'black',
-                    tools: [{
-                        name: "Regression Trend"
-                    }]
-                },
-                charts_storage_url: "https://saveload.tradingview.com",
-                enabled_study_templates: true,
-                enabled_features: ["study_templates"],
             });
 
             widget.onChartReady(() => {
