@@ -127,9 +127,14 @@ class KlineSeeder extends Seeder
                 'interval_id' => $interval->id,
             ];
             $openPrice = $closePrice;
-            $closePrice = rand(0, 1) ? $openPrice * (1 + rand($symbol->min_change, $symbol->max_change) / 100) : $openPrice * (1 - rand($symbol->min_change, $symbol->max_change) / 100);
-            // $highPrice = max($openPrice, $closePrice) + rand(1, 4);
-            // $lowPrice = min($openPrice, $closePrice) - rand(1, 4);
+            $changePercent = rand(0, 1) ? rand($symbol->min_change, $symbol->max_change) / 100 : -rand($symbol->min_change, $symbol->max_change) / 100;
+            $closePrice = $openPrice * (1 + $changePercent);
+            if($closePrice < $symbol->min_price){
+                $closePrice = $symbol->min_price;
+            }
+            if($closePrice > $symbol->max_price){
+                $closePrice = $symbol->max_price;
+            }
             if($openPrice > $closePrice){
                 $highPrice = $openPrice + ($openPrice * rand(5, 20) / 1000); // Thêm 0.1-0.5%
                 $lowPrice = $closePrice - ($closePrice * rand(5, 20) / 1000); // Giảm 0.1-0.5%
