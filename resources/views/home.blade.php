@@ -36,7 +36,7 @@
                     <div _ngcontent-gyu-c56="" id="app-homepage"><app-public-navbar _ngcontent-gyu-c56="" _nghost-gyu-c48="">
                             <div _ngcontent-gyu-c48="" id="app-navbar" class="sticky">
                                 <div _ngcontent-gyu-c48="" class="logo-banner"><img _ngcontent-gyu-c48="" src="/assets/icon/bx-logo-full.png"><!----><!----></div>
-                                <div _ngcontent-gyu-c48="" class="nav-right"><button id="btn-drawer" _ngcontent-gyu-c48="" routerlink="/login" class="btn btn-login text-nowrap" tabindex="0" data-toggle="drawer" data-target="#drawer-1">Login1</button><button _ngcontent-gyu-c48="" routerlink="/join-now" class="btn btn-sign-up text-nowrap text-white-real" tabindex="0">Sign Up</button><!----><!----><!---->
+                                <div _ngcontent-gyu-c48="" class="nav-right"><button id="btn-drawer" _ngcontent-gyu-c48="" routerlink="/login" class="btn btn-login text-nowrap" tabindex="0" data-toggle="drawer" data-target="#drawer-1">Login</button><button _ngcontent-gyu-c48="" routerlink="/join-now" class="btn btn-sign-up text-nowrap text-white-real" tabindex="0">Sign Up</button><!----><!----><!---->
                                     <div _ngcontent-gyu-c48="" class="setting"><app-select-language-icon _ngcontent-gyu-c48="" _nghost-gyu-c46="">
                                             <div _ngcontent-gyu-c46="" class="dropdown language"><a _ngcontent-gyu-c46="" type="button" data-bs-toggle="dropdown" aria-expanded="false" class="btn"><i _ngcontent-gyu-c46="" class="fa-solid fa-globe"></i></a>
                                                 <ul _ngcontent-gyu-c46="" class="dropdown-menu language-menu" style="margin-top: 5rem;">
@@ -845,7 +845,7 @@
     <script>
         $(document).ready(function() {
             $('#btn-drawer').click(function() {
-                $('#drawer-1').drawer('toggle');
+                // $('#drawer-1').drawer('toggle');
             });
         });
     </script>
