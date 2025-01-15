@@ -86,9 +86,11 @@ class UpdateKline extends Command
             ->orderBy('open_time', 'asc')
             ->first();
 
-        // Update high và low cho kline hiện tại
-        $klineHigh = max($kline->high, $closePrice);
-        $klineLow = min($kline->low, $closePrice);
+        // Tính toán high và low mới cho kline hiện tại
+        $maxPriceChange = abs($closePrice - $kline->open) * 0.2; // 20% của khoảng giá
+        
+        $klineHigh = max($closePrice, $kline->open) + (rand(1, 10) / 100) * $maxPriceChange;
+        $klineLow = min($closePrice, $kline->open) - (rand(1, 10) / 100) * $maxPriceChange;
 
         $kline->update([
             'close' => $closePrice,
@@ -97,9 +99,11 @@ class UpdateKline extends Command
             'volume' => $kline->volume + rand(0, 10),
         ]);
 
-        // Update high và low cho kline tiếp theo
-        $nextKlineHigh = max($nextKline->high, $closePrice);
-        $nextKlineLow = min($nextKline->low, $closePrice);
+        // Tính toán high và low mới cho kline tiếp theo
+        $maxPriceChangeNext = abs($closePrice - $nextKline->close) * 0.2;
+        
+        $nextKlineHigh = max($closePrice, $nextKline->close) + (rand(1, 10) / 100) * $maxPriceChangeNext;
+        $nextKlineLow = min($closePrice, $nextKline->close) - (rand(1, 10) / 100) * $maxPriceChangeNext;
 
         $nextKline->update([
             'open' => $closePrice,
