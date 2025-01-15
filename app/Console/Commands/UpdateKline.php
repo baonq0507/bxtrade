@@ -87,7 +87,7 @@ class UpdateKline extends Command
             ->first();
 
         // Tính toán high và low mới cho kline hiện tại
-        $maxPriceChange = abs($closePrice - $kline->open) * 0.2; // 20% của khoảng giá
+        $maxPriceChange = abs($closePrice - $kline->open) * 0.5; // 50% của khoảng giá
         
         $klineHigh = max($closePrice, $kline->open) + (rand(1, 10) / 100) * $maxPriceChange;
         $klineLow = min($closePrice, $kline->open) - (rand(1, 10) / 100) * $maxPriceChange;
@@ -100,7 +100,7 @@ class UpdateKline extends Command
         ]);
 
         // Tính toán high và low mới cho kline tiếp theo
-        $maxPriceChangeNext = abs($closePrice - $nextKline->close) * 0.2;
+        $maxPriceChangeNext = abs($closePrice - $nextKline->close) * 0.5;
         
         $nextKlineHigh = max($closePrice, $nextKline->close) + (rand(1, 10) / 100) * $maxPriceChangeNext;
         $nextKlineLow = min($closePrice, $nextKline->close) - (rand(1, 10) / 100) * $maxPriceChangeNext;
