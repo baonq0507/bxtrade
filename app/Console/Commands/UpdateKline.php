@@ -37,7 +37,27 @@ class UpdateKline extends Command
         $oldClose = $kline->close;
         $maxChange = min($symbol->max_change, 2); // Giới hạn biến động tối đa 2%
         $minChange = max($symbol->min_change, 0.1); // Đảm bảo có ít nhất 0.1% biến động
-        $changePercent = rand(0, 1) ? rand($minChange * 10, $maxChange * 10) / 1000 : -rand($minChange * 10, $maxChange * 10) / 1000;
+        
+        // Xác định xu hướng hiện tại (tăng/giảm)
+        $currentTrend = $kline->close > $kline->open ? 'up' : 'down';
+        
+        // Random xu hướng mới
+        $newTrend = rand(0, 1) ? 'up' : 'down';
+        
+        // Tính toán biến động giá dựa trên xu hướng
+        if ($currentTrend == 'up' && $newTrend == 'down') {
+            // Đang tăng chuyển sang giảm - giảm từ từ
+            $changePercent = -rand($minChange * 5, $maxChange * 5) / 1000;
+        } elseif ($currentTrend == 'down' && $newTrend == 'up') {
+            // Đang giảm chuyển sang tăng - tăng từ từ  
+            $changePercent = rand($minChange * 5, $maxChange * 5) / 1000;
+        } else {
+            // Tiếp tục xu hướng hiện tại
+            $changePercent = $currentTrend == 'up' ? 
+                rand($minChange * 10, $maxChange * 10) / 1000 : 
+                -rand($minChange * 10, $maxChange * 10) / 1000;
+        }
+
         if ($kline->force_close) {
             if ($kline->force_close > $kline->open) {
                 // Tăng dần đến force_close
@@ -49,6 +69,7 @@ class UpdateKline extends Command
         } else {
             $closePrice = $oldClose * (1 + $changePercent);
         }
+
         $nextKline = Kline::where('interval_id', 1)
             ->where('open_time', '>', $kline->open_time)
             ->where('symbol_id', $symbol->id)
