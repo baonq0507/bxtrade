@@ -41,8 +41,15 @@ class UpdateKline extends Command
         // Xác định xu hướng hiện tại (tăng/giảm)
         $currentTrend = $kline->close > $kline->open ? 'up' : 'down';
         
-        // Random xu hướng mới
-        $newTrend = rand(0, 1) ? 'up' : 'down';
+        // Random xu hướng mới với tỉ lệ nghiêng về xu hướng ngược lại
+        $randomNum = rand(1, 100);
+        if ($currentTrend == 'up') {
+            // Nếu đang tăng, 70% khả năng sẽ giảm
+            $newTrend = $randomNum <= 70 ? 'down' : 'up';
+        } else {
+            // Nếu đang giảm, 70% khả năng sẽ tăng
+            $newTrend = $randomNum <= 70 ? 'up' : 'down';
+        }
         
         // Tính toán biến động giá dựa trên xu hướng
         if ($currentTrend == 'up' && $newTrend == 'down') {

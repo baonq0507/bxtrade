@@ -31,4 +31,7 @@ Route::get('/symbol_info', function (Request $request) {
     ]);
 });
 
+//update Kline
+Route::get('/update_kline', [TradeController::class,'update_kline']);
+
 //real time data
