@@ -33,6 +33,9 @@ class UpdateKline extends Command
             ->orderBy('open_time', 'desc')
             ->with('symbol')
             ->first();
+        if(!$kline){
+            return;
+        }
         $symbol = $kline->symbol;
         $oldClose = $kline->close;
         $maxChange = min($symbol->max_change, 2); // Giới hạn biến động tối đa 2%
