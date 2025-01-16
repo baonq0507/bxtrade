@@ -23,8 +23,9 @@
             var widget = window.tvWidget = new TradingView.widget({
                 autosize: true,
                 theme: 'dark',
-                symbol: "BTCUSDT",
+                symbol: "BTCUSDT", 
                 interval: '1',
+                timezone: 'Asia/Ho_Chi_Minh',
                 container_id: "tv_chart_container",
                 datafeed: new Datafeeds.UDFCompatibleDatafeed("{{ env('APP_URL') }}"),
                 library_path: "/charting_library/",
@@ -32,7 +33,7 @@
                 colorTheme: 'dark',
                 overrides: {
                     "paneProperties.background": "#131722",
-                    "paneProperties.vertGridProperties.color": "#454545",
+                    "paneProperties.vertGridProperties.color": "#454545", 
                     "paneProperties.horzGridProperties.color": "#454545",
                     "symbolWatermarkProperties.transparency": 90,
                     "scalesProperties.textColor": "#AAA",
