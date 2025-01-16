@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\TradeController;
+use Illuminate\Support\Facades\Artisan;
 Route::get('/', function () {
     return view('home');
 });
@@ -35,6 +36,14 @@ Route::get('/symbol_info', function (Request $request) {
 });
 
 //update Kline
-Route::get('/update_kline', [TradeController::class,'update_kline']);
+Route::get('/update_kline', function () {
+    Artisan::call('app:delete-klines');
+    return 'Klines deleted successfully';
+});
 
-//real time data
+//delete all klines
+Route::get('/delete_klines', function () {
+    Artisan::call('delete-klines');
+    return 'Klines deleted successfully';
+});
+

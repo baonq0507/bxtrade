@@ -11,7 +11,7 @@ class DeleteKlines extends Command
      *
      * @var string
      */
-    protected $signature = 'app:delete-klines';
+    protected $signature = 'delete-klines';
 
     /**
      * The console command description.
