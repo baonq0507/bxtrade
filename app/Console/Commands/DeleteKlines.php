@@ -18,7 +18,7 @@ class DeleteKlines extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Delete all klines and create new klines';
 
     /**
      * Execute the console command.
@@ -26,5 +26,10 @@ class DeleteKlines extends Command
     public function handle()
     {
         DB::table('klines')->delete();
+
+        $this->info('Klines deleted successfully');
+        //run command
+        $this->call('db:seed --class=KlineSeeder');
+        $this->info('Klines created successfully');
     }
 }
