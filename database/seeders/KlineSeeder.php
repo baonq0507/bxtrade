@@ -75,6 +75,7 @@ class KlineSeeder extends Seeder
                 'volume' => $volume,
                 'symbol_id' => $symbol->id,
                 'interval_id' => $interval->id,
+                'force_close' => $closePrice,
             ];
 
             // Prepare for the next interval

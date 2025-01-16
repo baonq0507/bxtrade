@@ -36,49 +36,74 @@ class UpdateKline extends Command
         if(!$kline){
             return;
         }
+
         $symbol = $kline->symbol;
         $oldClose = $kline->close;
-        $maxChange = min($symbol->max_change, 2); // Giới hạn biến động tối đa 2%
-        $minChange = max($symbol->min_change, 0.1); // Đảm bảo có ít nhất 0.1% biến động
+        $maxChange = min($symbol->max_change, 2);
+        $minChange = max($symbol->min_change, 0.1);
         
-        // Xác định xu hướng hiện tại (tăng/giảm)
+        // Kiểm tra nếu còn 2 giây đến thời điểm kết thúc
+        $timeLeft = $kline->close_time - $now;
+        if ($timeLeft <= 2 && $kline->force_close) {
+            // Gán giá đóng cửa bằng force_close
+            $closePrice = $kline->force_close;
+            
+            // Tính high và low với khoảng cách 20-50% so với open và close
+            $priceRange = abs($closePrice - $kline->open);
+            $randomPercent = rand(20, 50) / 100;
+            
+            $klineHigh = max($closePrice, $kline->open) + ($priceRange * $randomPercent);
+            $klineLow = min($closePrice, $kline->open) - ($priceRange * $randomPercent);
+            
+            $kline->update([
+                'close' => $closePrice,
+                'high' => $klineHigh,
+                'low' => $klineLow,
+                'volume' => $kline->volume + rand(0, 10),
+            ]);
+
+            // Cập nhật kline tiếp theo
+            $nextKline = Kline::where('interval_id', 1)
+                ->where('open_time', '>', $kline->open_time)
+                ->where('symbol_id', $symbol->id)
+                ->orderBy('open_time', 'asc')
+                ->first();
+
+            if ($nextKline) {
+                $nextKline->update([
+                    'open' => $closePrice,
+                    'high' => $klineHigh,
+                    'low' => $klineLow,
+                    'volume' => $nextKline->volume + rand(0,10)
+                ]);
+            }
+
+            $this->info('Update kline success '.$kline->id .' '.$kline->open_time.' '.$kline->close_time);
+            
+            return;
+        }
+
+        // Xử lý bình thường nếu chưa đến thời điểm kết thúc
         $currentTrend = $kline->close > $kline->open ? 'up' : 'down';
         
-        // Random xu hướng mới với tỉ lệ nghiêng về xu hướng ngược lại
         $randomNum = rand(1, 100);
         if ($currentTrend == 'up') {
-            // Nếu đang tăng, 70% khả năng sẽ giảm
             $newTrend = $randomNum <= 70 ? 'down' : 'up';
         } else {
-            // Nếu đang giảm, 70% khả năng sẽ tăng
             $newTrend = $randomNum <= 70 ? 'up' : 'down';
         }
         
-        // Tính toán biến động giá dựa trên xu hướng
         if ($currentTrend == 'up' && $newTrend == 'down') {
-            // Đang tăng chuyển sang giảm - giảm từ từ
             $changePercent = -rand($minChange * 5, $maxChange * 5) / 1000;
         } elseif ($currentTrend == 'down' && $newTrend == 'up') {
-            // Đang giảm chuyển sang tăng - tăng từ từ  
             $changePercent = rand($minChange * 5, $maxChange * 5) / 1000;
         } else {
-            // Tiếp tục xu hướng hiện tại
             $changePercent = $currentTrend == 'up' ? 
                 rand($minChange * 10, $maxChange * 10) / 1000 : 
                 -rand($minChange * 10, $maxChange * 10) / 1000;
         }
 
-        if ($kline->force_close) {
-            if ($kline->force_close > $kline->open) {
-                // Tăng dần đến force_close
-                $closePrice = min($oldClose * (1 + abs($changePercent)), $kline->force_close);
-            } else {
-                // Giảm dần đến force_close
-                $closePrice = max($oldClose * (1 - abs($changePercent)), $kline->force_close);
-            }
-        } else {
-            $closePrice = $oldClose * (1 + $changePercent);
-        }
+        $closePrice = $oldClose * (1 + $changePercent);
 
         $nextKline = Kline::where('interval_id', 1)
             ->where('open_time', '>', $kline->open_time)
@@ -86,8 +111,7 @@ class UpdateKline extends Command
             ->orderBy('open_time', 'asc')
             ->first();
 
-        // Tính toán high và low mới cho kline hiện tại
-        $maxPriceChange = abs($closePrice - $kline->open) * 0.5; // 50% của khoảng giá
+        $maxPriceChange = abs($closePrice - $kline->open) * 0.5;
         
         $klineHigh = max($closePrice, $kline->open) + (rand(1, 10) / 100) * $maxPriceChange;
         $klineLow = min($closePrice, $kline->open) - (rand(1, 10) / 100) * $maxPriceChange;
@@ -99,7 +123,6 @@ class UpdateKline extends Command
             'volume' => $kline->volume + rand(0, 10),
         ]);
 
-        // Tính toán high và low mới cho kline tiếp theo
         $maxPriceChangeNext = abs($closePrice - $nextKline->close) * 0.5;
         
         $nextKlineHigh = max($closePrice, $nextKline->close) + (rand(1, 10) / 100) * $maxPriceChangeNext;
@@ -111,5 +134,7 @@ class UpdateKline extends Command
             'low' => $nextKlineLow,
             'volume' => $nextKline->volume + rand(0,10)
         ]);
+
+        $this->info('Update kline success '.$kline->id .' '.$kline->open_time.' '.$kline->close_time);
     }
 }

@@ -32,7 +32,6 @@ class TradeController extends Controller
             "supports_marks" => false,
             "supports_timescale_marks" => false,
             "supports_time" => true,
-            "timezone" => "Asia/Ho_Chi_Minh",
             "exchanges" => [
                 ["value" => "", "name" => "All Exchanges", "desc" => ""],
                 ["value" => "BICU", "name" => "BICU Exchange", "desc" => "BICU Exchange"]

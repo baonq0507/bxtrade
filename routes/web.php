@@ -9,6 +9,9 @@ Route::get('/', function () {
 Route::get('trade', function () {
     return view('trade');
 });
+Route::get('trade-test', function () {
+    return view('trade_test');
+});
 Route::get('/time', [TradeController::class,'time']);
 
 //config
