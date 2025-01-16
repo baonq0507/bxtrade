@@ -35,12 +35,12 @@
                 locale: "vi",
                 colorTheme: 'dark',
                 overrides: {
-                    "paneProperties.background": "#131722",
+                    "paneProperties.background": "#0e2438",
                     "paneProperties.vertGridProperties.color": "#454545",
                     "paneProperties.horzGridProperties.color": "#454545",
                     "symbolWatermarkProperties.transparency": 90,
                     "scalesProperties.textColor": "#AAA",
-                    "paneProperties.left.background": "#131722",
+                    "paneProperties.left.background": "#0e2438",
                 },
                 disabled_features: [
                     "header_widget",
