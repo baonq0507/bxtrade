@@ -24,6 +24,11 @@
             height: 100vh;
             width: 100%;
         }
+        #tradingview-widget {
+            border: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
     </style>
 </head>
 
