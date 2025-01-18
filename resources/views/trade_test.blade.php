@@ -34,6 +34,7 @@
                 library_path: "/charting_library/",
                 locale: "vi",
                 colorTheme: 'dark',
+                theme: 'dark',
                 overrides: {
                     "paneProperties.background": "#131722",
                     "paneProperties.vertGridProperties.color": "#454545",

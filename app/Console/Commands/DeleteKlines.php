@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Artisan;
 class DeleteKlines extends Command
 {
     /**
@@ -29,7 +30,7 @@ class DeleteKlines extends Command
 
         $this->info('Klines deleted successfully');
         //run command
-        $this->call('db:seed --class=KlineSeeder');
+        Artisan::call('db:seed --class=KlineSeeder');
         $this->info('Klines created successfully');
     }
 }

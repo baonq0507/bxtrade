@@ -34,6 +34,7 @@ class UpdateKline extends Command
             ->with('symbol')
             ->first();
         if(!$kline){
+            $this->info('No kline found');
             return;
         }
 
@@ -110,6 +111,10 @@ class UpdateKline extends Command
             ->where('symbol_id', $symbol->id)
             ->orderBy('open_time', 'asc')
             ->first();
+        if(!$nextKline){
+            $this->info('No next kline found');
+            return;
+        }
 
         $maxPriceChange = abs($closePrice - $kline->open) * 0.5;
         
