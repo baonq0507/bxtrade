@@ -30,7 +30,7 @@ class DeleteKlines extends Command
 
         $this->info('Klines deleted successfully');
         //run command
-        Artisan::call('db:seed --class=KlineSeeder');
+        Artisan::call('db:seed', ['--class' => 'KlineSeeder']);
         $this->info('Klines created successfully');
     }
 }
