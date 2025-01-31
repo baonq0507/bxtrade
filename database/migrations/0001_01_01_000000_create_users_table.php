@@ -13,10 +13,32 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('username')->unique();
+            $table->string('fullname')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('phone')->unique()->nullable();
+            $table->bigInteger('balance')->default(0);
+            $table->bigInteger('balance_demo')->default(1000000);
+            $table->string('address')->nullable();
+            $table->string('cccd_number')->nullable();
+            $table->string('cccd_image_before')->nullable();
+            $table->string('cccd_image_after')->nullable();
+            $table->string('bank_name')->nullable();
+            $table->string('bank_account_number')->nullable();
+            $table->string('bank_account_name')->nullable();
+            $table->string('bank_branch')->nullable();
+            $table->string('ip_address')->nullable();
+            $table->string('user_agent')->nullable();
+            $table->string('address_login')->nullable();
+            $table->enum('status_account', ['inactive', 'active', 'blocked'])->default('active');
+            $table->enum('status_trade', ['active', 'blocked'])->default('active');
+            $table->enum('role', ['user', 'admin'])->default('user');
+            $table->string('invite_code')->nullable();
+            $table->string('invite_by')->nullable();
             $table->string('password');
+            $table->string('password_balance')->nullable();
+            $table->string('avatar')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

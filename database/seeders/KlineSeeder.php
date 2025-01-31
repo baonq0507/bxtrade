@@ -34,8 +34,8 @@ class KlineSeeder extends Seeder
         $data = [];
 
         // Set up initial timestamps for the day
-        $openTime = Carbon::now()->subDays(1)->startOfDay()->timestamp;
-        $closeTime = Carbon::now()->endOfDay()->timestamp;
+        $openTime = Carbon::now()->timestamp;
+        $closeTime = Carbon::now()->addHours(24)->timestamp;
 
         // Initialize prices
         $openPrice = $symbol->min_price;

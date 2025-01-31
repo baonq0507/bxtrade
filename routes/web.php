@@ -2,17 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
-use App\Http\Controllers\TradeController;
 use Illuminate\Support\Facades\Artisan;
-Route::get('/', function () {
-    return view('home');
-});
-Route::get('trade', function () {
-    return view('trade');
-});
-Route::get('trade-test', function () {
-    return view('trade_test');
-});
+use App\Http\Controllers\{AuthController, TradeController, HomeController};
+
+Route::get('/', [HomeController::class,'index'])->name('home');
+
 Route::get('/time', [TradeController::class,'time']);
 
 //config
@@ -47,3 +41,16 @@ Route::get('/delete_klines', function () {
     return 'Klines deleted successfully';
 });
 
+Route::get('/login', [AuthController::class,'login'])->name('login');
+
+Route::get('/register', [AuthController::class,'register'])->name('register');
+
+Route::get('/profile', [AuthController::class,'profile'])->name('profile');
+
+Route::post('/login', [AuthController::class,'loginPost'])->name('loginPost');
+
+Route::post('/register', [AuthController::class,'registerPost'])->name('registerPost');
+
+Route::middleware('auth')->group(function () {
+    Route::get('trade', [TradeController::class,'index'])->name('trade');
+});

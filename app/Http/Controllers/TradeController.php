@@ -17,6 +17,14 @@ class TradeController extends Controller
     {
         $this->increment = 0;
     }
+
+    public function index()
+    {
+        $symbols = Symbol::all();
+        $user = auth()->user();
+        return view('trade', compact('symbols', 'user'));
+    }
+
     public function time()
     {
         return response(time())

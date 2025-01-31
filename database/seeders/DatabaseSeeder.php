@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             IntervalSeeder::class,
             SymbolSeeder::class,
             KlineSeeder::class,
+            ConfigSiteSeeder::class,
         ]);
     }
 }
